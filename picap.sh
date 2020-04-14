@@ -23,3 +23,4 @@ cd patches/bcm43455c0/7_45_189/nexmon/
 make
 make backup-firmware
 make install-firmware
+
