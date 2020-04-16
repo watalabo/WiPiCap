@@ -1,5 +1,6 @@
 # WiPiCap
 A script enabling Raspberry Pi to capture wireless packets.
+Detailed explanation of script is in Wiki.
 
 ## picap.sh
 This script apply Nexmon firmware patch (https://github.com/seemoo-lab/nexmon) which enables Raspberry Pi put an interface in monitor mode.
