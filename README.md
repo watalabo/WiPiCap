@@ -1,5 +1,5 @@
 # WiPiCap
-A script enabling Raspberry Pi to capture wireless packets.
+This project gives useful scripts and documents that help wireless sensing researchers who try to do experiments with Raspberry Pi.
 Detailed explanation of script is in Wiki.
 
 ## Codes
