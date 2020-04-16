@@ -1,4 +1,4 @@
-# PiCap
+# WiPiCap
 A script enabling Raspberry Pi to capture wireless packets.
 
 ## picap.sh
