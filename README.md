@@ -23,3 +23,7 @@ Nexmon firmware patch works with Broadcom WiFi chip **BCM43430A1** and **BCM4345
 The script `picap.sh` is for BCM43455C0 only, so if you have Raspberry Pi 3B+ or 4, all you have to do is run the script.  If you want to use the script on Raspberry Pi 3 or Zero W, you have to modify some part of the codes.  The script works only on **Raspbian**.
 
 ## How to use json2csi.py?
+Writing.
+
+## How to use VHT Compressed Beamforming Report for wireless sensing application?
+We give some ideas and concepts in Wiki.
