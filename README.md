@@ -38,10 +38,11 @@ firmware:       brcm/brcmfmac4373-sdio.bin
 Remember `filename` shown in above.
 
 3. Run the command.  In this case, `<PATH>` is `/lib/modules/4.19.97-v7+/kernel/drivers/net/wireless/broadcom/brcm80211/brcmfmac`.
-```mv "<PATH>/brcmfmac.ko" "<PATH>/brcmfmac.ko.orig"
+```
+mv "<PATH>/brcmfmac.ko" "<PATH>/brcmfmac.ko.orig"
 cp /home/pi/nexmon/patches/bcm43455c0/7_45_189/nexmon/brcmfmac_4.19.y-nexmon/brcmfmac.ko "<PATH>/"
-depmod -a```
-
+depmod -a
+```
 
 ## How to use json2csi.py?
 Writing.
