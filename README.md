@@ -45,7 +45,7 @@ depmod -a
 ```
 
 ## How to use json2csi.py?
-Writing.
+This script extracts VHT Compressed Beamforming Report from packet data represented by JSON.  Before run this script, ensure your JSON file is on the same directory as json2csi.py.  All you have to do is run the script.  No argument is needed.  When the script works well, `csi_orig.pkl` will created on the same directory.
 
-## How to use VHT Compressed Beamforming Report for wireless sensing application?
-We give some ideas and concepts in Wiki.
+## Why do we use VHT Compressed Beamforming Report for wireless sensing application?
+Recent years, many researchers are eager to create powerful wireless sensing system.
