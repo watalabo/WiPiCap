@@ -48,5 +48,11 @@ depmod -a
 This script extracts VHT Compressed Beamforming Report from packet data represented by JSON.  Before run this script, ensure your JSON file is on the same directory as json2csi.py.  All you have to do is run the script.  No argument is needed.  When the script works well, `csi_orig.pkl` will created on the same directory.
 
 ## Why do we use VHT Compressed Beamforming Report for wireless sensing application?
-Recent years, many researchers are eager to create powerful wireless sensing system.  Many of them use 802.11n CSI Tools (https://dhalperi.github.io/linux-80211n-csitool/) or Atheros CSI Tool (https://wands.sg/research/wifi/AtherosCSI/) to obtain raw CSI data but these tools require certain kind of Network Interface Card, so technological cost is too high.  Moreover most wifi chips on major laptops don't have system to send raw CSI to access point.
+Recent years, many researchers are eager to create powerful wireless sensing system.  Many of them use 802.11n CSI Tools (https://dhalperi.github.io/linux-80211n-csitool/) or Atheros CSI Tool (https://wands.sg/research/wifi/AtherosCSI/) to obtain raw CSI data but these tools require certain kind of Network Interface Card, so technological cost is too high.  Moreover, most modern wifi chips on major laptops don't have system to send raw CSI to access point.
+
 In contrast, many devices conformable to 802.11ac send VHT Compressed Beamforming Report back to access points, and this signal is mathematical transformation of the original Channel Matrix.  We assume this signal can convey channel status and thus we can use it for wireless sensing.  VHT Compressed Beamforming Report can be acquired by normal packet capture.  No limitation or requirement about what kind of wifi chipset you use to capture wireless packets.
+
+If you are interested in what VHT Compressed Beamforming Report is, or if you want to know our idea to use this information for wireless sensing, please check Wiki of this repository.
+
+### !!For English Speakers!!
+All documents on Wiki are now written in Japanese only.  We are preparing English documents, so please be patient!
