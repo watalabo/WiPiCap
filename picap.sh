@@ -23,4 +23,6 @@ cd patches/bcm43455c0/7_45_189/nexmon/
 make
 make backup-firmware
 make install-firmware
-
+mv "/lib/modules/4.19.97.-v7+/kernel/drivers/net/wireless/broadcom/brcm80211/brcmfmac/brcmfmac.ko" "/lib/modules/4.19.97.-v7+/kernel/drivers/net/wireless/broadcom/brcm80211/brcmfmac/brcmfmac.ko.orig"
+cp /home/pi/nexmon/patches/bcm43455c0/7_45_189/nexmon/brcmfmac_4.19.y-nexmon/brcmfmac.ko "/lib/modules/4.19.97.-v7+/kernel/drivers/net/wireless/broadcom/brcm80211/brcmfmac/"
+depmod -a

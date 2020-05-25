@@ -20,29 +20,13 @@ If you want to capture packets of wireless communication, you have to put a netw
 
 Nexmon firmware patch works with Broadcom WiFi chip **BCM43430A1** and **BCM43455C0**.  <br>BCM43430A1 is equipped on Raspberry Pi 3 and Zero W.  BCM43455C0 is equipped on Raspberry Pi 3B+ and 4.
 
-The script `picap.sh` is for BCM43455C0 only, so if you have Raspberry Pi 3B+ or 4, all you have to do is run the script.  If you want to use the script on Raspberry Pi 3 or Zero W, you have to modify some part of the codes.  The script works only on **Raspbian**.
+The script `picap.sh` is for BCM43455C0 only, so if you have Raspberry Pi 3B+ or 4.  If you want to use the script on Raspberry Pi 3 or Zero W, you have to modify some part of the codes.  The script works only on **Raspbian**.
 
-Nexmon firmware patch doesn't overwrite Wifi driver.  Thus, Raspberry Pi will lose its ability to have monitor interface after reboot.  To enable the ability even after reboot, please follow the instruction below.
+Follow the instruction below to install:
 
-1. Run the command.  
-`modinfo brcmfmac`
-2. Output would be like this:  
-```
-filename:       /lib/modules/4.19.97-v7+/kernel/drivers/net/wireless/broadcom/brcm80211/brcmfmac/brcmfmac.ko
-license:        Dual BSD/GPL
-description:    Broadcom 802.11 wireless LAN fullmac driver.
-author:         Broadcom Corporation
-firmware:       brcm/brcmfmac4373-sdio.bin
-.....
-```
-Remember `filename` shown in above.
-
-3. Run the command.  In this case, `<PATH>` is `/lib/modules/4.19.97-v7+/kernel/drivers/net/wireless/broadcom/brcm80211/brcmfmac`.
-```
-mv "<PATH>/brcmfmac.ko" "<PATH>/brcmfmac.ko.orig"
-cp /home/pi/nexmon/patches/bcm43455c0/7_45_189/nexmon/brcmfmac_4.19.y-nexmon/brcmfmac.ko "<PATH>/"
-depmod -a
-```
+1. Type `sudo su` and enter the shell as root user.
+2. Type `chmod u+x picap.sh`.
+3. Type `./picap.sh`
 
 ## How to use json2csi.py?
 This script extracts VHT Compressed Beamforming Report from packet data represented by JSON.  Before run this script, ensure your JSON file is on the same directory as json2csi.py.  All you have to do is run the script.  No argument is needed.  When the script works well, `csi_orig.pkl` will created on the same directory.
