@@ -1,4 +1,3 @@
-sudo su
 apt update && apt upgrade
 apt install raspberrypi-kernel-headers git libgmp3-dev gawk qpdf bison flex make libtool-bin automake texinfo
 git clone https://github.com/seemoo-lab/nexmon.git
