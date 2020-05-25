@@ -1,5 +1,5 @@
 apt update && apt upgrade
-apt install raspberrypi-kernel-headers git libgmp3-dev gawk qpdf bison flex make libtool-bin automake texinfo
+apt install raspberrypi-kernel-headers git libgmp3-dev gawk qpdf bison flex make libtool-bin automake texinfo aircrack-ng
 git clone https://github.com/seemoo-lab/nexmon.git
 cd nexmon
 cd buildtools/isl-0.10
@@ -23,5 +23,5 @@ make
 make backup-firmware
 make install-firmware
 mv "/lib/modules/4.19.97.-v7+/kernel/drivers/net/wireless/broadcom/brcm80211/brcmfmac/brcmfmac.ko" "/lib/modules/4.19.97.-v7+/kernel/drivers/net/wireless/broadcom/brcm80211/brcmfmac/brcmfmac.ko.orig"
-cp /home/pi/nexmon/patches/bcm43455c0/7_45_189/nexmon/brcmfmac_4.19.y-nexmon/brcmfmac.ko "/lib/modules/4.19.97.-v7+/kernel/drivers/net/wireless/broadcom/brcm80211/brcmfmac/"
+cp /home/pi/WiPiCap/nexmon/patches/bcm43455c0/7_45_189/nexmon/brcmfmac_4.19.y-nexmon/brcmfmac.ko "/lib/modules/4.19.97.-v7+/kernel/drivers/net/wireless/broadcom/brcm80211/brcmfmac/"
 depmod -a
