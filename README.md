@@ -41,7 +41,7 @@ then run the following:
 
 `sudo airmon-ng check kill && sudo airmon-ng wlan0 start`
 
-Airmon tool kills all the processes which might have to do with wifi chip, and set a new monitor mode interface.  To check the name of the interface, you can use `iwconfig`.
+Airmon tool kills all the processes which might have to do with wifi chip, and set a new monitor mode interface.  To check the name of the interface, you can use `iwconfig`.  While the monitor mode interface is active, the Raspberry Pi will lose wireless internet connection.
 
 Next, check the channel.  If you want to capture packets communicating on channel 48, type
 
