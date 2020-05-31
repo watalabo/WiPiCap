@@ -7,6 +7,7 @@ import csv
 from datetime import datetime
 from cmath import sin, cos, exp, phase, pi
 from math import floor
+import sys
 
 # ============================================================
 # argparse setting
@@ -29,6 +30,8 @@ for item in pkt.itertuples(name=None):
     ta = item[2]
     nc = int(item[3], 16)+1
     nr = int(item[4], 16)+1
+    if (nc, nr)!=(3,3) or (nc, nr)!=(2, 3):
+        raise Exception("not compatible antenna set")
     beamforming_report = item[5]
     codebook = int(item[6], 16)
     chanwidth = int(item[8], 16)
