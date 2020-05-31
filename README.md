@@ -13,7 +13,7 @@ This script extracts VHT Compressed Beamforming Report from packet data represen
 If you don't know how you can transcode pcap into CSV, please see Wiki.
 
 This script parses CSV and reconstruct PHI/PSI angle values from raw hex data.
-If you don't know what VHT Compressed Beamforming Report is, please see Wiki of this project.
+If you don't know what VHT Compressed Beamforming Report is, please see **introduction.pdf**.
 
 ## How to enable Raspberry Pi to capture packets?
 If you want to capture packets of wireless communication, you have to put a network interface into **Monitor mode**.  However, Raspberry Pi is not capable of having a monitor mode interface.  Nexmon firmware patch (https://github.com/seemoo-lab/nexmon) is C-based firmware patching framework for Broadcom WiFi chips that enables monitor mode on Raspberry Pi.
