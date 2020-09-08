@@ -2,3 +2,5 @@
 *.csv
 *.pkl
 .DS_Store
+ace.py
+/regacy
