@@ -24,6 +24,6 @@ make backup-firmware
 make install-firmware
 
 macinfo=`modinfo brcmfmac | grep filename | awk '{print $2}'`
-mv $macinfo "{$macinfo}.orig"
+mv $macinfo "$macinfo".orig
 cp /home/pi/WiPiCap/nexmon/patches/bcm43455c0/7_45_189/nexmon/brcmfmac_5.4.y-nexmon/brcmfmac.ko `dirname ${macinfo}`
 depmod -a
