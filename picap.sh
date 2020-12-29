@@ -1,5 +1,5 @@
-apt update && apt upgrade
-apt install raspberrypi-kernel-headers git libgmp3-dev gawk qpdf bison flex make libtool-bin automake texinfo aircrack-ng
+apt update && apt upgrade -y
+apt install -y raspberrypi-kernel-headers git libgmp3-dev gawk qpdf bison flex make libtool-bin automake texinfo aircrack-ng tcpdump iperf
 git clone https://github.com/seemoo-lab/nexmon.git
 cd nexmon
 cd buildtools/isl-0.10
@@ -22,3 +22,8 @@ cd patches/bcm43455c0/7_45_189/nexmon/
 make
 make backup-firmware
 make install-firmware
+
+macinfo=`modinfo brcmfmac | grep filename | awk '{print $2}'`
+mv $macinfo "{$macinfo}.orig"
+cp /home/pi/WiPiCap/nexmon/patches/bcm43455c0/7_45_189/nexmon/brcmfmac_5.4.y-nexmon/brcmfmac.ko `dirname ${macinfo}`
+depmod -a
