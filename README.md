@@ -28,13 +28,15 @@ Make sure you start working at `/home/pi/`.
 - Copy the modified driver: `cp /home/pi/WiPiCap/nexmon/patches/bcm43455c0/7_45_189/nexmon/brcmfmac_4.19.y-nexmon/brcmfmac.ko "<PATH>/"`
 - Probe all modules and generate new dependency: `depmod -a` -->
 
-### **Capture Packets & Extract Compressed Beamforming Report**
+## Capture Packets & Extract Compressed Beamforming Report
 You have to do two things: set a network interface in monitor mode, capture packets.
 
 ### **Set Monitor Mode Interface**
 Using our setup script is the better way to set a network interface in monitor mode listening to a certain channel:
 
-`sh set_interface.sh <channel_number>`
+```bash
+sh set_interface.sh <channel_number>
+```
 
 You must make sure `aircrack-ng` is installed on your system.  A new network interface `wlan0mon` should be created for given channel number.
 
@@ -50,13 +52,17 @@ sudo apt install tcpdump
 
 To capture packtets with the interface `wlan0mon` and save `output.pcap`, run the following:
 
-`sudo tcpdump -i wlan0mon -w output.pcap`
+```bash
+sudo tcpdump -i wlan0mon -w output.pcap
+```
 
 ### **pcap_to_csv.sh**
 
 Let your pcap file is `example.pcap`.  Then, run the following:
 
-`sh pcap_to_csv.sh example`
+```bash
+sh pcap_to_csv.sh example
+```
 
 You'll see `example.csv` is created.  Basically, you need not to edit the csv file.
 
