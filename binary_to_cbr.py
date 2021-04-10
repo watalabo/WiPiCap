@@ -1,10 +1,9 @@
 import numpy as np
 import argparse
 import pandas as pd
-import csv
+import pickle
 from datetime import datetime, timedelta
 from tools import *
-import io
 
 # argparse setting
 parser = argparse.ArgumentParser(description='Compressed CSI extractor')
@@ -15,7 +14,7 @@ parser.add_argument('-e', metavar='END', type=str, required=True)
 args = parser.parse_args()
 
 # Read Input CSV
-pkt = pd.read_csv('./data/{}'.format(args.i))
+pkt = pd.read_csv('{}'.format(args.i))
 pkt['frame.time'] = pkt['frame.time'].apply(lambda x: datetime.strptime(x[:24], '%b %d, %Y %H:%M:%S.%f'))
 pkt = pkt[pkt['wlan.ta']==args.a]
 
@@ -88,14 +87,14 @@ def convert_beamforming_to_angles(beamforming_report, asnr, phi_size, psi_size, 
     except Exception as e: # Ignore different channel width contamination
         return pd.Series([], dtype=np.float64)
 
-angles = pkt['wlan.vht.compressed_beamforming_report'].apply(lambda x: convert_beamforming_to_angles(x, asnr, phi_size, psi_size, subc, data_size, split_rule))
-# interpolation and alignment
-angles_itp = angles.asfreq(freq='10ms').interpolate('time', limit_direction='both').asfreq(freq='50ms')
+angles = pkt['wlan.vht.compressed_beamforming_report'].apply(lambda x: convert_beamforming_to_angles(x, asnr, phi_size, psi_size, subc, data_size, split_rule)).values
 
-angles_itp_list = angles_itp.values
+# interpolation and alignment !! Option !!
+# angles_itp = angles.asfreq(freq='10ms').interpolate('time', limit_direction='both').asfreq(freq='50ms')
+# angles_itp_list = angles_itp.values
 
-save_filename = "comp_feedback.csv"
-with open(save_filename, 'w') as f:
-    writer = csv.writer(f)
-    for item in angles_itp_list:
-        writer.writerow(item)
+number_of_packets = angles.shape[0]
+angles_reshaped = angles.reshape(number_of_packets, subc, len(split_rule)-1)
+
+with open('compressed_beamforming_report.pickle', 'wb') as f:
+    pickle.dump(angles_reshaped, f)
