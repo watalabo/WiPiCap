@@ -25,7 +25,7 @@ If you want to capture packets of wireless communication, you have to put a netw
 
 Nexmon firmware patch works with Broadcom WiFi chip **BCM43430A1** and **BCM43455C0**.  <br>BCM43430A1 is equipped on Raspberry Pi 3 and Zero W.  BCM43455C0 is equipped on Raspberry Pi 3B+ and 4.
 
-The script `picap.sh` is for BCM43455C0 only, so if you have Raspberry Pi 3B+ or 4.  If you want to use the script on Raspberry Pi 3 or Zero W, you have to modify some part of the codes.  The script works only on **Raspbian**.  Moreover, Nexmon firmware patch only works on kernel 4.19.x.  Thus, if Rasbian runs on newer kernel, you have to downgrade the kernel in some way.
+The script `picap.sh` is for BCM43455C0 only, so if you have Raspberry Pi 3B+ or 4.  If you want to use the script on Raspberry Pi 3 or Zero W, you have to modify some part of the codes.  The script works only on **Raspbian**, not for a latest Raspberry Pi OS.  Moreover, out setup script only works on kernel 5.4.
 
 Follow the instruction below to install:
 
@@ -36,11 +36,11 @@ Follow the instruction below to install:
 
 Make sure you start working at `/home/pi/`.
 
-To maintain the firmware changes after a reboot, perform the following steps:
+<!-- To maintain the firmware changes after a reboot, perform the following steps:
 - Find the path of the default driver at reboot: `modinfo brcmfmac`
 - Backup the original driver: `mv "<PATH TO THE DRIVER>/brcmfmac.ko" "<PATH TO THE DRIVER>/brcmfmac.ko.orig"`
 - Copy the modified driver: `cp /home/pi/WiPiCap/nexmon/patches/bcm43455c0/7_45_189/nexmon/brcmfmac_4.19.y-nexmon/brcmfmac.ko "<PATH>/"`
-- Probe all modules and generate new dependency: `depmod -a`
+- Probe all modules and generate new dependency: `depmod -a` -->
 
 ## How to capture packets?
 You have to do two things: set a network interface in monitor mode, capture packets.
