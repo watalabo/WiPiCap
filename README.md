@@ -83,7 +83,9 @@ Recent years, many researchers are eager to create powerful wireless sensing sys
 
 In contrast, many devices conformable to 802.11ac send VHT Compressed Beamforming Report back to access points, and this signal is mathematical transformation of the original Channel Matrix.  We assume this signal can convey channel status and thus we can use it for wireless sensing.  VHT Compressed Beamforming Report can be acquired by normal packet capture.  No limitation or requirement about what kind of wifi chipset you use to capture wireless packets.
 
-If you are interested in what VHT Compressed Beamforming Report is, or if you want to know our idea to use this information for wireless sensing, please check Wiki of this repository.
+If you are interested in our idea to use this information for wireless sensing, please check below:
+
+"CSI2Image: Image Reconstruction From Channel State Information Using Generative Adversarial Networks" (https://ieeexplore.ieee.org/document/9380376)
 
 ## FAQ
 ### - pcap_to_csv.sh returns nothing.
