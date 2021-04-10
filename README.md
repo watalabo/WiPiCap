@@ -38,9 +38,10 @@ then run the following:
 
 `sh set_interface.sh <channel_number>`
 
+A new network interface `wlan0mon` should be created.
 
-### Capture Packets
-We recommend you to use `tcpdump` for packet capture.  You can install the tool by the following:
+### Traffic Generation & Capture Packets
+We recommend you to use `tcpdump` for packet capture.  You can install the tool:
 
 `sudo apt install tcpdump`
 
@@ -48,13 +49,13 @@ If you capture packtets with the interface `wlan0mon` and save `output.pcap`, ru
 
 `sudo tcpdump -i wlan0mon -w output.pcap`
 
-## How to use pcap2csv.sh?
+## How to use pcap_to_csv.sh?
 
 Let your pcap file is `example.pcap`.  Then, run the following:
 
 `sh pcap2csv.sh example`
 
-then you'll see `example.csv` is created.  Basically, you need not to edit the csv file.
+You'll see `example.csv` is created.  Basically, you need not to edit the csv file.
 
 ## How to use csi_extractor.py?
 
@@ -69,5 +70,6 @@ In contrast, many devices conformable to 802.11ac send VHT Compressed Beamformin
 
 If you are interested in what VHT Compressed Beamforming Report is, or if you want to know our idea to use this information for wireless sensing, please check Wiki of this repository.
 
-### !!For English Speakers!!
-All documents on Wiki are now written in Japanese only.  We are preparing English documents, so please be patient!
+# FAQ
+## pcap2csv.sh returns nothing.
+

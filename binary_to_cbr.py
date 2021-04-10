@@ -1,7 +1,6 @@
 import numpy as np
 import argparse
 import pandas as pd
-import fastcsv
 import csv
 from datetime import datetime, timedelta
 from tools import *
