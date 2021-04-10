@@ -1,8 +1,6 @@
 # WiPiCap
 This project gives useful scripts and documents that help wireless sensing researchers who try to do experiments with Raspberry Pis.
 
-Sorry!! **All codes are currently not available**.  But don't worry.  We will back to you in a few weeks.
-
 ## How It Works
 WiPiCap enables your Rapsberry Pi to be into monitor mode, capture wireless packets and extract 802.11ac/ax Compressed Beamforming Report.
 
