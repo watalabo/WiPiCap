@@ -1,6 +1,8 @@
 *.pcap
 *.csv
 *.pkl
+*.pickle
+*.pdf
 .DS_Store
 ace.py
 /regacy
