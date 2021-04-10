@@ -86,5 +86,6 @@ In contrast, many devices conformable to 802.11ac send VHT Compressed Beamformin
 If you are interested in what VHT Compressed Beamforming Report is, or if you want to know our idea to use this information for wireless sensing, please check Wiki of this repository.
 
 ## FAQ
-### - pcap2csv.sh returns nothing.
-
+### - pcap_to_csv.sh returns nothing.
+It is possible that you are not getting packets that contain Compressed Beamforming Report in the first place.
+Try using iperf or ping to generate traffic while capturing packtes.
