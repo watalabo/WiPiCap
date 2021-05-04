@@ -1,4 +1,4 @@
-# WiPiCap
+# WiPiCap: Caputuring Wi-Fi CSI Frames Using RaspberryPi 
 This project gives useful scripts and documents that help wireless sensing researchers who try to do experiments with Raspberry Pis.
 
 ## How It Works
