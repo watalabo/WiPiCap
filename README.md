@@ -9,7 +9,7 @@ If you want to capture packets of wireless communication, you have to put a netw
 
 Nexmon firmware patch works with Broadcom WiFi chip **BCM43430A1** and **BCM43455C0**.  <br>BCM43430A1 is equipped on Raspberry Pi 3 and Zero W.  BCM43455C0 is equipped on Raspberry Pi 3B+ and 4.
 
-The script `install.sh` is for BCM43455C0 only, so if you have Raspberry Pi 3B+ or 4.  If you want to use the script on Raspberry Pi 3 or Zero W, you have to modify some part of the codes.  The script works only on **Raspbian**, not for a latest Raspberry Pi OS.  Moreover, the setup script only works on kernel 5.4.
+The script `install.sh` is for BCM43455C0 only, so if you have Raspberry Pi 3B+ or 4.  If you want to use the script on Raspberry Pi 3 or Zero W, you have to modify some part of the codes.  The script works only on **Raspbian**, not for a latest Raspberry Pi OS.  Moreover, the setup script only works on kernel 5.4.  The raspberrypi-kernel-header for kernel 5.4 is currently not available from official package source, thus you have to build kernel headers by yourself(c.f. https://github.com/seemoo-lab/nexmon/issues/469).
 
 Follow the instruction below to install:
 
