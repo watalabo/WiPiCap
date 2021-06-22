@@ -1,5 +1,5 @@
 apt update && apt upgrade -y
-apt install -y raspberrypi-kernel-headers git libgmp3-dev gawk qpdf bison flex make libtool-bin automake texinfo aircrack-ng tcpdump iperf
+apt install -y git libgmp3-dev gawk qpdf bison flex make libtool-bin automake texinfo aircrack-ng tcpdump iperf
 git clone https://github.com/seemoo-lab/nexmon.git
 cd nexmon
 cd buildtools/isl-0.10
