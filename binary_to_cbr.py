@@ -8,9 +8,9 @@ from tools import *
 # argparse setting
 parser = argparse.ArgumentParser(description='Compressed CSI extractor')
 parser.add_argument('-i', metavar='INPUT', type=str, required=True, help='Input file name')
-parser.add_argument('-a', metavar='ADDRESS', type=str, required=True)
-parser.add_argument('-s', metavar='START', type=str, required=True)
-parser.add_argument('-e', metavar='END', type=str, required=True)
+parser.add_argument('-a', metavar='ADDRESS (with colons)', type=str, required=True,help='Mac Address (with colons)')
+parser.add_argument('-s', metavar='START', type=str, required=True,help='Start time (%Y%m%d%H%M%S)')
+parser.add_argument('-e', metavar='END', type=str, required=True,help='End time (%Y%m%d%H%M%S)')
 args = parser.parse_args()
 
 # Read Input CSV
@@ -37,8 +37,6 @@ if chanwidth==0: subc=52
 elif chanwidth==1: subc=108
 elif chanwidth==2: subc=234
 
-data_size = phi_size + psi_size
-
 start_time = datetime.strptime(args.s, '%Y%m%d%H%M%S')
 end_time = datetime.strptime(args.e, '%Y%m%d%H%M%S')
 
@@ -58,11 +56,14 @@ print('''
 
 # Intialize angles split rule
 if (nr,nc) == (2,1) or (nr,nc) == (2,2):
-    split_rule = [0, phi_size, data_size]
+    split_rule = [0, phi_size, phi_size+psi_size]
+    data_size = phi_size+psi_size
 elif (nr,nc) == (nr,nc) ==(3,1):
-    split_rule = [0, phi_size, 2*phi_size, 2*phi_size+psi_size, data_size]
+    split_rule = [0, phi_size, 2*phi_size, 2*phi_size+psi_size, 2*phi_size+2*psi_size]
+    data_size = 2*phi_size+2*psi_size
 elif (nr,nc) == (3,2) or (nr,nc) ==(3,3):
-    split_rule = [0, phi_size, 2*phi_size, 2*phi_size+psi_size, 2*phi_size+2*psi_size, 3*phi_size+2*psi_size, data_size]
+    split_rule = [0, phi_size, 2*phi_size, 2*phi_size+psi_size, 2*phi_size+2*psi_size, 3*phi_size+2*psi_size, 3*phi_size+3*psi_size]
+    data_size = 3*phi_size+3*psi_size
 else:
     raise Exception('Uncompatible Antenna Set')
 
@@ -83,18 +84,11 @@ def convert_beamforming_to_angles(beamforming_report, asnr, phi_size, psi_size, 
             for idx in range(len(split_rule)-1):
                 angle_dec = int(d[split_rule[idx]:split_rule[(idx+1)]],2)
                 csis.append(angle_dec)
-        return pd.Series(csis)
     except Exception as e: # Ignore different channel width contamination
-        return pd.Series([], dtype=np.float64)
+        print(e)
+    finally:
+        return pd.Series(csis)
 
 angles = pkt['wlan.vht.compressed_beamforming_report'].apply(lambda x: convert_beamforming_to_angles(x, asnr, phi_size, psi_size, subc, data_size, split_rule)).values
 
-# interpolation and alignment !! Option !!
-# angles_itp = angles.asfreq(freq='10ms').interpolate('time', limit_direction='both').asfreq(freq='50ms')
-# angles_itp_list = angles_itp.values
-
-number_of_packets = angles.shape[0]
-angles_reshaped = angles.reshape(number_of_packets, subc, len(split_rule)-1)
-
-with open('compressed_beamforming_report.pickle', 'wb') as f:
-    pickle.dump(angles_reshaped, f)
+np.savetxt('compressed_beamforming_report.csv', angles, delimiter=",", fmt='%0.0f')
