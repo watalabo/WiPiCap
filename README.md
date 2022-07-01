@@ -71,6 +71,7 @@ Restore the V matrix from the CSV generated using `pcap_to_csv.sh`.
 ```
 The above command generates a matrix V restored from Compressed Beamforming Report.
 The results are stored in a database file in SQLite format with the file name `cbr.db`.
+The database
 
 ### Example
 ```bash
