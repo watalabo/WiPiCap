@@ -1,5 +1,5 @@
 # !!!Maintenance Announcement!!!
-This repository has not been maintained for a long time, so the author himself plans to re-check the scripts and make major updates. Maintenance will continue until the end of 2023 at the latest. Please be aware when referring to this repository.
+The author himself plans to re-check the scripts and make major updates. Maintenance will continue until the end of 2023 at the latest. Please be aware when referring to this repository.
 
 # WiPiCap: Caputuring Wi-Fi CBR Frames Using RaspberryPi 
 This project gives useful scripts and documents that help wireless sensing researchers who try to do experiments with Raspberry Pis.
