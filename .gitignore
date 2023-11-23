@@ -3,9 +3,12 @@
 *.pkl
 *.pickle
 *.pdf
+*.c
+*.so
 .DS_Store
 ace.py
 /regacy
 /__pycache__
 /.vscode
 /build
+/playground

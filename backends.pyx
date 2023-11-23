@@ -2,12 +2,14 @@
 from collections import deque
 import cython
 from datetime import datetime
+import logging
 import math
 import re
 
 import numpy as np
 import pandas as pd
 import pyshark
+from tqdm import tqdm
 
 cimport numpy as cnp
 from libc.stdint cimport uint8_t
@@ -16,6 +18,8 @@ ctypedef cnp.float64_t DOUBLE
 ctypedef cnp.int64_t INT64
 
 cdef double PI = np.pi
+
+logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 
 
 
@@ -41,15 +45,17 @@ hex_to_bin = str.maketrans(
 )
 
 
-def pcap_to_data_columns(pcap_file, address):
+def pcap_to_data_columns(pcap_file, address, bw):
     p = pyshark.FileCapture(
         pcap_file,
         display_filter=f"wlan.fc.type_subtype == 0x000e && wlan.ta == {address}",
     )
+    logging.info(f'{pcap_file} load succeed.')
 
     # parameter setting
     phi_psi_matching = [(4.0, 2.0), (6.0, 4.0)]
     subc_matching = [52, 108, 234]
+    bw_matching = [20, 40, 80]
 
     # sequentially process packets
     (
@@ -64,13 +70,16 @@ def pcap_to_data_columns(pcap_file, address):
         angle_index_l,
         snr_l,
     ) = ([], [], [], [], [], [], [], [], [], [])
-    for i, packet in enumerate(p):
+    logging.info("loading packet data")
+    for i, packet in enumerate(tqdm(p)):
         # get values
         timestamp = datetime.fromtimestamp(float(packet.frame_info.time_epoch))
         nc = int(packet["wlan.mgt"].wlan_vht_mimo_control_ncindex, 16) + 1
         nr = int(packet["wlan.mgt"].wlan_vht_mimo_control_nrindex, 16) + 1
         codebook = int(packet["wlan.mgt"].wlan_vht_mimo_control_codebookinfo, 16)
         chanwidth = int(packet["wlan.mgt"].wlan_vht_mimo_control_chanwidth, 16)
+        if bw_matching[chanwidth]!=bw:
+            continue
         num_snr = nc
         (phi_size, psi_size) = phi_psi_matching[codebook]
         num_subc = subc_matching[chanwidth]
@@ -231,7 +240,7 @@ cdef quantized_angle_formulas(str angle_type, int angle, int phi_size, int psi_s
     return angle_funcs[angle_type](angle)
 
 
-def get_v_matrix(pcap_file, address):
+def get_v_matrix(pcap_file, address, bw, verbose=False):
     
     (
         timestamp_l,
@@ -244,16 +253,14 @@ def get_v_matrix(pcap_file, address):
         angle_index_l,
         cbr_l,
         snr_l,
-    ) = pcap_to_data_columns(pcap_file, address)
+    ) = pcap_to_data_columns(pcap_file, address, bw)
 
-    # assert len(timestamp_l) == len(nr_l) == len(nc_l) == len(phi_size_l) == len(
-    #     psi_size_l
-    # ) == len(num_subc_l) == len(angle_type_l) == len(angle_index_l) == len(cbr_l) == len(
-    #     snr_l
-    # )
+    if verbose:
+        print(f'{len(timestamp_l)} packets parsed')
 
+    logging.info("Extracting V matrix")
     vs = []
-    for c in range(len(timestamp_l)):
+    for c in tqdm(range(len(timestamp_l))):
         num_subc, nr, nc = num_subc_l[c], nr_l[c], nc_l[c]
         phi_size, psi_size = phi_size_l[c], psi_size_l[c]
         angle_type, angle_index = angle_type_l[c], angle_index_l[c]
@@ -269,7 +276,7 @@ def get_v_matrix(pcap_file, address):
             v[subc, ...] = mat_e
             # check if v is unitary
             assert np.all((np.sum(np.abs(mat_e)**2, axis=0)-1)<1e-5), f"v is not unitary {np.sum(np.abs(mat_e)**2, axis=0)}"
-        vs.append(v)
+        vs.append(v[np.newaxis, ...])
 
-    vs = np.array(vs)
+    vs = np.concatenate([v for v in vs], axis=0)
     return vs
