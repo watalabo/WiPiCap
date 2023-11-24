@@ -30,6 +30,8 @@ v_matrix = get_v_matrix(pcap_file='./test.pcap', address='11:22:33:44:55:66', bw
 # v_matrix is a complex-valued ndarray with the shape of (packets, subcarriers, rx, tx)
 ```
 
+![wipicap_example](wipicap_example.png)
+
 ## Known Issue
 Parsing speed is currently limited (80 packets/sec).  We're willing to implement parallelization, but any suggestion for performance improvement is welcom.
 
