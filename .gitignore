@@ -6,7 +6,9 @@
 *.c
 *.so
 .DS_Store
-ace.py
+.python-Version
+.gitignore
+set_interface.sh
 /regacy
 /__pycache__
 /.vscode
