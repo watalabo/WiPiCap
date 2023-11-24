@@ -55,11 +55,13 @@ def get_v_matrix(pcap_file, address, bw, verbose=False):
     bw_matching = [20, 40, 80]
 
     # sequentially process packets
-    logger.info("parsing packet data...")
+    if verbose:
+        logger.info("parsing packet data...")
+    ts = []
     vs = []
     for i, packet in enumerate(tqdm(p)):
         # get values
-        timestamp = datetime.fromtimestamp(float(packet.frame_info.time_epoch))
+        timestamp = float(packet.frame_info.time_epoch)
         nc = int(packet["wlan.mgt"].wlan_vht_mimo_control_ncindex, 16) + 1
         nr = int(packet["wlan.mgt"].wlan_vht_mimo_control_nrindex, 16) + 1
         codebook = int(packet["wlan.mgt"].wlan_vht_mimo_control_codebookinfo, 16)
@@ -118,10 +120,15 @@ def get_v_matrix(pcap_file, address, bw, verbose=False):
             # check if v is unitary
             assert np.all((np.sum(np.abs(mat_e)**2, axis=0)-1)<1e-5), f"v is not unitary {np.sum(np.abs(mat_e)**2, axis=0)}"
         vs.append(v[np.newaxis, ...])
+        ts.append(timestamp)
 
     vs = np.concatenate([v for v in vs], axis=0)
+    ts = np.array(ts)
 
-    return vs
+    if verbose:
+        logger.info(f'{len(ts)} packets are parsed.')
+
+    return vs, ts
 
 cdef binary_to_quantized_angle(
     str binary,
