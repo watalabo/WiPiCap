@@ -1,13 +1,14 @@
+# Author: S. Kato (Graduate School of Information Technology and Science, Osaka University)
+# Version: 2.0
+# License: MIT License
+
 # cython: linetrace=True
-from collections import deque
 import cython
 from datetime import datetime
-import logging
-import math
+from loguru import logger
 import re
 
 import numpy as np
-import pandas as pd
 import pyshark
 from tqdm import tqdm
 
@@ -18,9 +19,6 @@ ctypedef cnp.float64_t DOUBLE
 ctypedef cnp.int64_t INT64
 
 cdef double PI = np.pi
-
-logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
-
 
 
 hex_to_bin = str.maketrans(
@@ -45,12 +43,11 @@ hex_to_bin = str.maketrans(
 )
 
 
-def pcap_to_data_columns(pcap_file, address, bw):
+def get_v_matrix(pcap_file, address, bw, verbose=False):
     p = pyshark.FileCapture(
         pcap_file,
         display_filter=f"wlan.fc.type_subtype == 0x000e && wlan.ta == {address}",
     )
-    logging.info(f'{pcap_file} load succeed.')
 
     # parameter setting
     phi_psi_matching = [(4.0, 2.0), (6.0, 4.0)]
@@ -58,19 +55,8 @@ def pcap_to_data_columns(pcap_file, address, bw):
     bw_matching = [20, 40, 80]
 
     # sequentially process packets
-    (
-        timestamp_l,
-        nr_l,
-        nc_l,
-        phi_size_l,
-        psi_size_l,
-        num_subc_l,
-        cbr_l,
-        angle_type_l,
-        angle_index_l,
-        snr_l,
-    ) = ([], [], [], [], [], [], [], [], [], [])
-    logging.info("loading packet data")
+    logger.info("parsing packet data...")
+    vs = []
     for i, packet in enumerate(tqdm(p)):
         # get values
         timestamp = datetime.fromtimestamp(float(packet.frame_info.time_epoch))
@@ -119,31 +105,23 @@ def pcap_to_data_columns(pcap_file, address, bw):
             cbr_hex, num_snr, num_subc, angle_seq_len, split_rule
         )
 
-        # append
-        timestamp_l.append(timestamp)
-        nc_l.append(nc)
-        nr_l.append(nr)
-        num_subc_l.append(num_subc)
-        cbr_l.append(cbr)
-        snr_l.append(snr)
-        phi_size_l.append(phi_size)
-        psi_size_l.append(psi_size)
-        angle_type_l.append(angle_type)
-        angle_index_l.append(angle_index)
+        # V matrix recovery
+        v = np.zeros((num_subc, nr, nc), dtype=complex)
+        subc_len = len(angle_type)
+        for subc in range(num_subc):
+            angle_slice = cbr[subc * subc_len : (subc + 1) * subc_len]
+            angle_slice = [quantized_angle_formulas(t, a, phi_size, psi_size) for t, a in zip(angle_type, angle_slice)]
+            mat_e = inverse_givens_rotation(
+                nr, nc, angle_slice, angle_type, angle_index
+            )
+            v[subc, ...] = mat_e
+            # check if v is unitary
+            assert np.all((np.sum(np.abs(mat_e)**2, axis=0)-1)<1e-5), f"v is not unitary {np.sum(np.abs(mat_e)**2, axis=0)}"
+        vs.append(v[np.newaxis, ...])
 
-    return (
-            timestamp_l,
-            nr_l,
-            nc_l,
-            phi_size_l,
-            psi_size_l,
-            num_subc_l,
-            angle_type_l,
-            angle_index_l,
-            cbr_l,
-            snr_l,
-    )
+    vs = np.concatenate([v for v in vs], axis=0)
 
+    return vs
 
 cdef binary_to_quantized_angle(
     str binary,
@@ -239,44 +217,3 @@ cdef quantized_angle_formulas(str angle_type, int angle, int phi_size, int psi_s
     }
     return angle_funcs[angle_type](angle)
 
-
-def get_v_matrix(pcap_file, address, bw, verbose=False):
-    
-    (
-        timestamp_l,
-        nr_l,
-        nc_l,
-        phi_size_l,
-        psi_size_l,
-        num_subc_l,
-        angle_type_l,
-        angle_index_l,
-        cbr_l,
-        snr_l,
-    ) = pcap_to_data_columns(pcap_file, address, bw)
-
-    if verbose:
-        print(f'{len(timestamp_l)} packets parsed')
-
-    logging.info("Extracting V matrix")
-    vs = []
-    for c in tqdm(range(len(timestamp_l))):
-        num_subc, nr, nc = num_subc_l[c], nr_l[c], nc_l[c]
-        phi_size, psi_size = phi_size_l[c], psi_size_l[c]
-        angle_type, angle_index = angle_type_l[c], angle_index_l[c]
-        v = np.zeros((num_subc, nr, nc), dtype=complex)
-        subc_len = len(angle_type)
-        cbr = cbr_l[c]
-        for subc in range(num_subc):
-            angle_slice = cbr[subc * subc_len : (subc + 1) * subc_len]
-            angle_slice = [quantized_angle_formulas(t, a, phi_size, psi_size) for t, a in zip(angle_type, angle_slice)]
-            mat_e = inverse_givens_rotation(
-                nr, nc, angle_slice, angle_type, angle_index
-            )
-            v[subc, ...] = mat_e
-            # check if v is unitary
-            assert np.all((np.sum(np.abs(mat_e)**2, axis=0)-1)<1e-5), f"v is not unitary {np.sum(np.abs(mat_e)**2, axis=0)}"
-        vs.append(v[np.newaxis, ...])
-
-    vs = np.concatenate([v for v in vs], axis=0)
-    return vs

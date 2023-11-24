@@ -1,0 +1,7 @@
+numpy
+pyshark
+cython
+loguru
+tqdm
+
+
