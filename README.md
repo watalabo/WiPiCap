@@ -48,8 +48,8 @@ If you use WiPiCap in your work, please conseider citing the following paper:
 @ARTICLE{cbrace,
   title   = "{CBR-ACE}: Counting Human Exercise using {Wi-Fi} Beamforming
              Reports",
-  author  = "Kato, Sorachi and Murakami, Tomoki and Fujihashi, Takuya and
-             Watanabe, Takashi and Saruwatari, Shunsuke",
+  author  = "Sorachi Kato and Tomoki Murakami and Takuya Fujihashi and
+             Takashi Watanabe and Shunsuke Saruwatari",
   journal = "Journal of Information Processing",
   volume  =  30,
   pages   = "66--74",
