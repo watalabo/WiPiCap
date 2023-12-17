@@ -1,6 +1,3 @@
-# !!!Maintenance Announcement!!!
-The author himself plans to re-check the scripts and make major updates. Maintenance will continue until the end of 2023 at the latest. Please be aware when referring to this repository.
-
 # WiPiCap: Wi-Fi CBR Frames Parser
 This project gives useful scripts and documents to help researchers who try to implement wireless sensing system with IEEE 802.11ac VHT Compressed Beamforming Report.
 
