@@ -43,7 +43,7 @@ Please check appendix (will be ready soon...) to know how to build your own test
 N/A
 
 ## Citation
-If you use WiPiCap in your work, please conseider citing the following paper:
+If you use WiPiCap in your work, please consider citing the following paper:
 ```
 @ARTICLE{cbrace,
   title   = "{CBR-ACE}: Counting Human Exercise using {Wi-Fi} Beamforming
@@ -56,3 +56,8 @@ If you use WiPiCap in your work, please conseider citing the following paper:
   year    =  2022
 }
 ```
+
+# Author
+S. Kato
+
+Graduate School of Information Science and Technology, Osaka University
