@@ -61,3 +61,4 @@ If you use WiPiCap in your work, please consider citing the following paper:
 S. Kato
 
 Graduate School of Information Science and Technology, Osaka University
+<img src="https://upload.wikimedia.org/wikipedia/commons/1/15/%E5%A4%A7%E9%98%AA%E5%A4%A7%E5%AD%A6.svg" height="90">
