@@ -57,9 +57,17 @@ def get_v_matrix(pcap_file, address, verbose=False):
     # sequentially process packets
     ts = []
     vs = []
-    for i, packet in enumerate(p):
+    p_cnt = 0
+
+    while True:
+        try:
+            packet = p.__next__()
+        except StopIteration:
+            break
+
+        p_cnt += 1
         if verbose:
-            logger.info(f"parsing {i+1}/{len(p)} packet data...")
+            logger.info(f"parsing {p_cnt} packets...")
 
         raw_hex = packet.frame_raw.value
 
@@ -135,7 +143,7 @@ def get_v_matrix(pcap_file, address, verbose=False):
     ts = np.array(ts)
 
     if verbose:
-        logger.info(f'{len(ts)} packets are parsed.')
+        logger.info(f'{ts.shape[0]} packets are parsed.')
 
     return ts, vs
 
