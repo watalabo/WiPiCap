@@ -12,5 +12,5 @@ set_interface.sh
 /regacy
 /__pycache__
 /.vscode
-/build
+*/build
 /playground
