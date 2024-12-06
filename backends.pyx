@@ -1,5 +1,5 @@
 # Author: S. Kato (Graduate School of Information Technology and Science, Osaka University)
-# Version: 2.0
+# Version: 3.0
 # License: MIT License
 
 # cython: linetrace=True
@@ -43,37 +43,65 @@ hex_to_bin = str.maketrans(
 )
 
 
-def get_v_matrix(pcap_file, address, bw, verbose=False):
+def get_v_matrix(pcap_file, address, num_to_process=None, verbose=False):
     p = pyshark.FileCapture(
         pcap_file,
         display_filter=f"wlan.fc.type_subtype == 0x000e && wlan.ta == {address}",
-    )
+        use_json=True,
+        include_raw=True
+    )._packets_from_tshark_sync()
 
     # parameter setting
     phi_psi_matching = [(4.0, 2.0), (6.0, 4.0)]
-    subc_matching = [52, 108, 234]
-    bw_matching = [20, 40, 80]
 
     # sequentially process packets
-    if verbose:
-        logger.info("parsing packet data...")
     ts = []
     vs = []
-    for i, packet in enumerate(tqdm(p)):
+    p_cnt = 0
+
+    while True:
+        try:
+            packet = p.__next__()
+        except StopIteration:
+            break
+
+        p_cnt += 1
+        if num_to_process is not None and p_cnt > num_to_process:
+            break
+        if verbose:
+            logger.info(f"parsing {p_cnt} packets...")
+
+        raw_hex = packet.frame_raw.value
+
         # get values
         timestamp = float(packet.frame_info.time_epoch)
-        nc = int(packet["wlan.mgt"].wlan_vht_mimo_control_ncindex, 16) + 1
-        nr = int(packet["wlan.mgt"].wlan_vht_mimo_control_nrindex, 16) + 1
-        codebook = int(packet["wlan.mgt"].wlan_vht_mimo_control_codebookinfo, 16)
-        chanwidth = int(packet["wlan.mgt"].wlan_vht_mimo_control_chanwidth, 16)
-        if bw_matching[chanwidth]!=bw:
-            continue
+
+        # check VHT or HE
+        category_code = int(raw_hex[96:98], 16)
+        if category_code == 21:
+            # VHT
+            mimo_control_end_idx = 106
+            he_mimo_control = hex_flip(raw_hex[100:mimo_control_end_idx])
+            he_mimo_control_bin = bin(int(he_mimo_control, 16))[2:].zfill(24)
+            codebook_info = int(he_mimo_control_bin[13], 2)
+            bw = int(he_mimo_control_bin[16:18], 2)
+            nr = int(he_mimo_control_bin[18:21], 2) + 1
+            nc = int(he_mimo_control_bin[21:], 2) + 1
+        elif category_code == 30:
+            # HE
+            mimo_control_end_idx = 110
+            he_mimo_control = hex_flip(raw_hex[100:mimo_control_end_idx])
+            he_mimo_control_bin = bin(int(he_mimo_control, 16))[2:].zfill(40)
+            ru_end_index = int(he_mimo_control_bin[11:17], 2)
+            ru_start_index = int(he_mimo_control_bin[17:23], 2)
+            codebook_info = int(he_mimo_control_bin[30], 2)
+            bw = int(he_mimo_control_bin[32:34], 2)
+            nr = int(he_mimo_control_bin[34:37], 2) + 1
+            nc = int(he_mimo_control_bin[37:], 2) + 1
+
         num_snr = nc
-        (phi_size, psi_size) = phi_psi_matching[codebook]
-        num_subc = subc_matching[chanwidth]
-        cbr_hex = packet["wlan.mgt"].wlan_vht_compressed_beamforming_report.replace(
-            ":", ""
-        )
+        (phi_size, psi_size) = phi_psi_matching[codebook_info]
+        cbr_hex = hex_flip(raw_hex[mimo_control_end_idx : -8])
 
         # calc binary splitting rule
         angle_bits_order = []
@@ -99,11 +127,17 @@ def get_v_matrix(pcap_file, address, bw, verbose=False):
             psi_indices[1] += 1
             cnt -= 1
 
+        num_subc = int(
+            (len(cbr_hex) - num_snr * 2)
+            * 4
+            // (phi_size * angle_type.count("phi") + psi_size * angle_type.count("psi"))
+        )
+
         split_rule = np.zeros(angle_bits_order_len + 1)
         split_rule[1:] = np.cumsum(angle_bits_order)
         split_rule = split_rule.astype(np.int32)
         angle_seq_len = split_rule[-1]
-        cbr, snr = binary_to_quantized_angle(
+        cbr, snr = hex_to_quantized_angle(
             cbr_hex, num_snr, num_subc, angle_seq_len, split_rule
         )
 
@@ -116,38 +150,36 @@ def get_v_matrix(pcap_file, address, bw, verbose=False):
             mat_e = inverse_givens_rotation(
                 nr, nc, angle_slice, angle_type, angle_index
             )
-            v[subc, ...] = mat_e
+            v[subc] = mat_e
             # check if v is unitary
             assert np.all((np.sum(np.abs(mat_e)**2, axis=0)-1)<1e-5), f"v is not unitary {np.sum(np.abs(mat_e)**2, axis=0)}"
-        vs.append(v[np.newaxis, ...])
+        vs.append(v[np.newaxis])
         ts.append(timestamp)
 
-    vs = np.concatenate([v for v in vs], axis=0)
+    vs = np.concatenate(vs)
     ts = np.array(ts)
 
     if verbose:
-        logger.info(f'{len(ts)} packets are parsed.')
+        logger.info(f'{ts.shape[0]} packets are parsed.')
 
-    return vs, ts
+    return ts, vs
 
-cdef binary_to_quantized_angle(
-    str binary,
+cdef hex_to_quantized_angle(
+    str cbr_hex,
     int num_snr,
     int num_subc,
     int angle_seq_len,
     cnp.ndarray[int] split_rule,
 ):
     cdef:
-        str cbr_hex_join, cbr_bin, snr_bin
+        str cbr_bin, snr_bin
         list cbr_subc_split, angle_dec, hex_split
         list cbr = []
         list snr = []
         int snr_idx, i, start, max_length
         cnp.ndarray[int] angle_bits_order
 
-    hex_split = re.findall(r"..", binary)[::-1]
-    cbr_hex_join = "".join(hex_split)
-    cbr_bin = cbr_hex_join.translate(hex_to_bin)[::-1]
+    cbr_bin = cbr_hex.translate(hex_to_bin)[::-1]
 
     for i in range(num_snr):
         snr_bin = cbr_bin[i * 8 : (i + 1) * 8][::-1]
@@ -224,3 +256,6 @@ cdef quantized_angle_formulas(str angle_type, int angle, int phi_size, int psi_s
     }
     return angle_funcs[angle_type](angle)
 
+
+cdef hex_flip(str hex_str):
+    return "".join(reversed([hex_str[i : i + 2] for i in range(0, len(hex_str), 2)]))
