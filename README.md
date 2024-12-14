@@ -1,5 +1,5 @@
 # 🎉 Latest Update (12/06/2024)
-WiPiCap now universary supports both IEEE 802.11ac VHT and 802.11ax HE beamforming report extraction.
+WiPiCap now universally supports both IEEE 802.11ac VHT and 802.11ax HE beamforming report extraction.
 
 # WiPiCap: Wi-Fi CBR Frames Parser
 This project gives useful scripts and documents to help researchers who try to implement wireless sensing system with IEEE 802.11ac VHT / 802.11ax HE Compressed Beamforming Report.
