@@ -60,6 +60,13 @@ If you use WiPiCap in your work, please consider citing the following paper:
 }
 ```
 
+# Who cites our works
+1. C. Wu, X. Huang, J. Huang, and G. Xing, “Enabling ubiquitous WiFi sensing with beamforming reports,” in Proceedings of the ACM SIGCOMM 2023 Conference, New York NY USA, 2023.
+2. E. Yi et al., “BFMSense: WiFi Sensing Using Beamforming Feedback Matrix,” NSDI, pp. 1697–1712, 2024.
+3. E. Yi, F. Zhang, J. Xiong, K. Niu, Z. Yao, and D. Zhang, “Enabling WiFi sensing on new-generation WiFi cards,” Proc. ACM Interact. Mob. Wearable Ubiquitous Technol., vol. 7, no. 4, pp. 1–26, Dec. 2023.
+4. A. Liu, Y.-T. Lin, and K. Sundaresan, “View-agnostic human exercise cataloging with single MmWave radar,” Proc. ACM Interact. Mob. Wearable Ubiquitous Technol., vol. 8, no. 3, pp. 1–23, Aug. 2024.
+5. R. Xiao, X. Chen, Y. He, J. Han, and J. Han, “Lend me your beam: Privacy implications of plaintext beamforming feedback in WiFi,” Netw Distrib Syst Secur Symp, 2025.
+
 # Author
 S. Kato
 
