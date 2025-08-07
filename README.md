@@ -1,5 +1,5 @@
-# 🎉 Latest Update (12/06/2024)
-WiPiCap now universally supports both IEEE 802.11ac VHT and 802.11ax HE beamforming report extraction.
+# 🎉 Latest Update (08/07/2025)
+C++ implementation is released!  Much faster than Python version, fast enough for real-time stream decoding and visualization.
 
 # WiPiCap: Wi-Fi CBR Frames Parser
 This project gives useful scripts and documents to help researchers who try to implement wireless sensing system with IEEE 802.11ac VHT / 802.11ax HE Compressed Beamforming Report.
@@ -44,6 +44,10 @@ Please check appendix (will be ready soon...) to know how to build your own test
 
 ## FAQ
 N/A
+
+## Changelog
+- 12/06/2024
+  - Universal support for both IEEE 802.11ac VHT and 802.11ax HE beamforming report extraction.
 
 ## Citation
 If you use WiPiCap in your work, please consider citing the following paper:
