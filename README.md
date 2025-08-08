@@ -30,7 +30,7 @@ v_matrix = get_v_matrix(pcap_file='./test.pcap', address='11:22:33:44:55:66', bw
 ![wipicap_example](wipicap_example.png)
 
 ### C++
-Real-time streame decoding and live plot with the following command:
+Real-time stream decoding and live plot with the following command:  
 `./wipicap [wireless interface name] [MAC address]`
 
 Before running the program, make sure that the system activates a wireless network interface in monitor mode (e.g. mon0).  The easiest way to create such an interface is to use aircrack-ng (https://github.com/aircrack-ng/aircrack-ng).
