@@ -17,8 +17,8 @@ If you are interested in our idea to use this information for wireless sensing, 
 ---
 ## Usage
 ### Python
-[!NOTE]  
-Real-time stream decoding and live plotting are not available with Python module.
+> [!NOTE]
+> Real-time stream decoding and live plotting are not available with Python module.
 
 ```python
 from wipicap import get_v_matrix
