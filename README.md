@@ -30,7 +30,10 @@ v_matrix = get_v_matrix(pcap_file='./test.pcap', address='11:22:33:44:55:66', bw
 ![wipicap_example](wipicap_example.png)
 
 ### C++
-under construction
+Real-time streame decoding and live plot with the following command:
+`./wipicap [wireless interface name] [MAC address]`
+
+Before running the program, make sure that the system activates a wireless network interface in monitor mode (e.g. mon0).  The easiest way to create such an interface is to use aircrack-ng (https://github.com/aircrack-ng/aircrack-ng).
 
 ---
 
@@ -40,13 +43,34 @@ under construction
 2. Build the package. `python setup.py build_ext --inplace`
 
 ### C++
-under construction...
+We recommend to compile the source on Ubuntu/Raspberry Pi OS.
+#### Dependencies
+- libpcap
+  - `sudo apt install libpcap-dev`
+- eigen
+  - `sudo apt install libeigen3-dev`
+- matplotlibcpp
+  - Put matplotlibcpp.h (https://github.com/lava/matplotlib-cpp) in ./C++.
+- Python with development headers
+  `sudo apt install python3-matplotlib python3-numpy python3-dev`
 
+1. Compile mobicom25_demo.cpp
+   ```bash
+   g++ -std=c++17 -O2 \
+   -I/usr/include/eigen3 \
+   -I/usr/include/python3.12 \
+   -I/usr/include/x86_64-linux-gnu/python3.12 \
+   -I/usr/lib/python3/dist-packages/numpy/core/include \
+   mobicom25_demo.cpp \
+   -lpcap -lpython3.12 \
+   -o wipicap
+   ```
+   Confirm Python version is matched with the one installed in your system.
 ---
 
 ## Misc.
-### Packet Capture
-Please check appendix (will be ready soon...) to know how to build your own testbed for packet capture, on Raspberry Pi 3B+/4 using Nexmon firmware patch (https://github.com/seemoo-lab/nexmon).
+### Packet Capture on Raspberry Pi
+Please check Nexmon firmware patch (https://github.com/seemoo-lab/nexmon) to build your own testbed using Raspberry Pi 3B+/4.
 
 ### FAQ
 N/A

@@ -9,7 +9,7 @@
 #include <mutex>
 
 #include <pcap.h>
-#include <Eigen/Dense>
+#include <eigen3/Eigen/Dense>
 #include "matplotlibcpp.h"
 
 // Namespace alias
