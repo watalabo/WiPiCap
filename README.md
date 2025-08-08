@@ -18,7 +18,8 @@ CBR-ACE: Counting Human Exercise using Wi-Fi Beamforming Reports (https://www.js
 ---
 ## Usage
 ### Python
-[!NOTE] Real-time stream decoding and live plotting are not available with Python module.
+[!NOTE]
+Real-time stream decoding and live plotting are not available with Python module.
 
 ```python
 from wipicap import get_v_matrix
