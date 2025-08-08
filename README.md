@@ -10,15 +10,14 @@ In recent years, numerous researchers have been actively pursuing the developmen
 
 In contrast, many devices conforming to modern standards, **802.11ac/ax**, transmit VHT Compressed Beamforming Report (CBR) back to access points. This signal is a mathematical transformation of the original channel matrix. We presume this signal conveys channel status, enabling its utilization for wireless sensing. VHT CBR can be acquired through standard packet capture. Notably, there are no limitations or requirements regarding the Wi-Fi chipset because CBR is protocol-compliant feedback. For further details on the mathematical transformation from CSI into CBR, please refer to the appendix (which will be available shortly).
 
-If you are interested in our idea to use this information for wireless sensing, please check our previous works:
-CSI2Image: Image Reconstruction From Channel State Information Using Generative Adversarial Networks (https://ieeexplore.ieee.org/document/9380376)
-
-CBR-ACE: Counting Human Exercise using Wi-Fi Beamforming Reports (https://www.jstage.jst.go.jp/article/ipsjjip/30/0/30_66/_article/-char/ja/)
+If you are interested in our idea to use this information for wireless sensing, please check our previous works:  
+- CSI2Image: Image Reconstruction From Channel State Information Using Generative Adversarial Networks (https://ieeexplore.ieee.org/document/9380376)
+- CBR-ACE: Counting Human Exercise using Wi-Fi Beamforming Reports (https://www.jstage.jst.go.jp/article/ipsjjip/30/0/30_66/_article/-char/ja/)
 
 ---
 ## Usage
 ### Python
-[!NOTE]
+[!NOTE]  
 Real-time stream decoding and live plotting are not available with Python module.
 
 ```python
