@@ -1,4 +1,4 @@
-# WiPiCap: Wi-Fi CBR Frames Parser
+# WiPiCap: Wi-Fi Compressed Beamforming Report Decoding System
 This project gives useful scripts and documents to help researchers who try to implement wireless sensing system with IEEE 802.11 ac/ax Compressed Beamforming Report.
 
 # 🎉 Latest Update (08/07/2025)
