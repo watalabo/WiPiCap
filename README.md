@@ -1,3 +1,4 @@
+![logo](./assets/logo.png)
 # WiPiCap: Wi-Fi Compressed Beamforming Report Decoding System
 This project gives useful scripts and documents to help researchers who try to implement wireless sensing system with IEEE 802.11 ac/ax Compressed Beamforming Report.
 
@@ -27,7 +28,7 @@ v_matrix = get_v_matrix(pcap_file='./test.pcap', address='11:22:33:44:55:66', bw
 # v_matrix is a complex-valued ndarray with the shape of (packets, subcarriers, rx, tx)
 ```
 
-![wipicap_example](wipicap_example.png)
+![wipicap_example](./assets/wipicap_example.png)
 
 ### C++
 Real-time stream decoding and live plot with the following command:  
