@@ -110,7 +110,7 @@ If you use WiPiCap in your work, please consider citing the following paper:
 1. E. Yi, F. Zhang, J. Xiong, K. Niu, Z. Yao, and D. Zhang, “Enabling WiFi sensing on new-generation WiFi cards,” Proc. ACM Interact. Mob. Wearable Ubiquitous Technol., vol. 7, no. 4, pp. 1–26, Dec. 2023.
 
 # Author
-S. Kato
+S. Kato, Y. Ikemura
 
 Graduate School of Information Science and Technology, Osaka University
 <img src="https://upload.wikimedia.org/wikipedia/commons/1/15/%E5%A4%A7%E9%98%AA%E5%A4%A7%E5%AD%A6.svg" height="90">
